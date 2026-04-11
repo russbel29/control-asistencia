@@ -6,8 +6,66 @@
   padding: 0;
 }
 
+/* ─── Design tokens — Control de Asistencia Municipal ─────────────────────────
+   Intent: institucional, serio, confiable. Como un mostrador bien gestionado.
+   Depth strategy: inset inputs + surface color shifts. Sin sombras dramáticas.
+   Spacing base: 4px (0.25rem)
+   ─────────────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Primarios institucionales */
+  --ink-900:   #1a2f5a;   /* azul marino oscuro — uniforme, autoridad */
+  --ink-700:   #22407a;   /* azul marino medio — hover */
+  --ink-500:   #2d55a0;   /* azul medio — acento secundario */
+  --gold-500:  #b8922a;   /* dorado sello oficial */
+  --gold-300:  #d4aa50;   /* dorado claro — hover acento */
+
+  /* Superficies — papel de planilla */
+  --surface-0: #f0f2f5;   /* fondo de página — gris frío escritorio */
+  --surface-1: #ffffff;   /* card principal */
+  --surface-2: #eef0f4;   /* inputs inset — ligeramente más oscuro que card */
+  --surface-3: #e5e8ed;   /* hover en inputs */
+
+  /* Texto */
+  --text-primary:   #0d1b36;  /* negro tinta */
+  --text-secondary: #4a5568;  /* gris medio */
+  --text-tertiary:  #8a95a3;  /* placeholder, metadata */
+
+  /* Bordes */
+  --border-soft:    rgba(26, 47, 90, 0.08);   /* separación silenciosa */
+  --border-medium:  rgba(26, 47, 90, 0.16);   /* estructura visible */
+  --border-focus:   rgba(26, 47, 90, 0.55);   /* focus ring */
+
+  /* Semánticos */
+  --error-bg:     #fef2f2;
+  --error-border: rgba(220, 38, 38, 0.2);
+  --error-text:   #b91c1c;
+}
+
 body {
-  font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
-  background-color: #f3f4f6;
-  color: #111827;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background-color: var(--surface-0);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Textura de papel sutil en el fondo del login */
+.bg-paper {
+  background-color: var(--surface-0);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+}
+
+/* Input inset — recibe contenido, no destaca */
+.input-inset {
+  background-color: var(--surface-2);
+  border: 1.5px solid transparent;
+  transition: border-color 150ms ease, background-color 150ms ease;
+}
+.input-inset:hover {
+  background-color: var(--surface-3);
+}
+.input-inset:focus-within {
+  background-color: var(--surface-1);
+  border-color: var(--border-focus);
+  outline: none;
 }
