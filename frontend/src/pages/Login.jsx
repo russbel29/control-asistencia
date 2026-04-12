@@ -60,9 +60,10 @@ export default function Login() {
     >
       {/* Card */}
       <div
-        className="w-full rounded-3xl px-10 py-10"
+        className="w-full rounded-3xl"
         style={{
-          maxWidth: 400,
+          maxWidth: 440,
+          padding: '10px 48px 40px',
           background: '#ffffff',
           boxShadow: '0 20px 60px rgba(0,0,0,0.15)',
         }}
@@ -88,14 +89,14 @@ export default function Login() {
 
         {/* Título */}
         <h1
-          className="text-center text-[26px] font-extrabold mt-5 mb-8"
+          className="text-center text-[26px] font-extrabold mt-6 mb-10"
           style={{ color: '#1a2e4a' }}
         >
           Iniciar sesión
         </h1>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-7">
 
           {/* Usuario — underline input */}
           <div
@@ -186,7 +187,7 @@ export default function Login() {
           <button
             type="submit"
             disabled={cargando}
-            className="w-full h-12 rounded-full text-[15px] font-bold text-white transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed mt-2"
+            className="w-full h-12 rounded-full text-[15px] font-bold text-white transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed mt-3"
             style={{
               background: 'linear-gradient(135deg, #2980d4 0%, #1565b8 100%)',
               boxShadow: '0 6px 20px rgba(41,128,212,0.45)',
