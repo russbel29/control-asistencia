@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 
-// ─── Íconos ───────────────────────────────────────────────────────────────────
 const IconUser = () => (
   <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
     <path strokeLinecap="round" strokeLinejoin="round"
@@ -36,6 +35,7 @@ export default function Login() {
   const [usuario,     setUsuario]     = useState('')
   const [password,    setPassword]    = useState('')
   const [verPassword, setVerPassword] = useState(false)
+  const [recordarme,  setRecordarme]  = useState(false)
   const [error,       setError]       = useState('')
   const [cargando,    setCargando]    = useState(false)
 
@@ -54,234 +54,175 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen flex">
-
-      {/* ── Panel izquierdo — identidad visual ── */}
-      <div
-        className="hidden lg:flex lg:w-[52%] flex-col justify-between p-14 relative overflow-hidden"
-        style={{ background: 'linear-gradient(145deg, #0d1f45 0%, #1a3a6e 55%, #0f2d5a 100%)' }}
-      >
-        {/* Círculos decorativos — textura sin ser ruido */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full"
-            style={{ background: 'radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%)' }} />
-          <div className="absolute bottom-0 -left-24 w-[400px] h-[400px] rounded-full"
-            style={{ background: 'radial-gradient(circle, rgba(184,146,42,0.12) 0%, transparent 70%)' }} />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full"
-            style={{ background: 'radial-gradient(circle, rgba(255,255,255,0.02) 0%, transparent 65%)' }} />
-        </div>
-
-        {/* Grid de puntos sutil */}
-        <div
-          className="absolute inset-0 opacity-[0.07]"
-          style={{
-            backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.8) 1px, transparent 1px)',
-            backgroundSize: '28px 28px',
-          }}
-        />
-
-        {/* Contenido del panel */}
-        <div className="relative z-10">
-          {/* Línea acento dorada */}
-          <div
-            className="w-12 h-1 rounded-full mb-8"
-            style={{ background: 'linear-gradient(90deg, #b8922a, #e8c96e)' }}
-          />
-          <h2 className="text-4xl font-black text-white leading-tight tracking-tight">
-            Control de<br />
-            <span style={{ color: '#d4aa50' }}>Asistencia</span>
-          </h2>
-          <p className="mt-4 text-base leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>
-            Plataforma de gestión y registro<br />de asistencia del personal.
-          </p>
-        </div>
-
-        {/* Stats decorativos */}
-        <div className="relative z-10 flex gap-8">
-          {[
-            { valor: '100%', label: 'Cobertura diaria' },
-            { valor: '24/7', label: 'Disponibilidad' },
-            { valor: 'Seguro', label: 'Acceso por área' },
-          ].map(({ valor, label }) => (
-            <div key={label}>
-              <p className="text-xl font-black text-white">{valor}</p>
-              <p className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.4)' }}>{label}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* Línea de separación inferior */}
-        <div
-          className="absolute bottom-0 left-0 right-0 h-px"
-          style={{ background: 'linear-gradient(90deg, transparent, rgba(184,146,42,0.4), transparent)' }}
-        />
+    <div
+      className="min-h-screen flex items-center justify-center px-4 py-12"
+      style={{ background: 'linear-gradient(160deg, #1a6fc4 0%, #1259a7 40%, #0d3d7a 100%)' }}
+    >
+      {/* Círculos decorativos de fondo */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full"
+          style={{ background: 'radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%)' }} />
+        <div className="absolute -bottom-40 -left-40 w-[600px] h-[600px] rounded-full"
+          style={{ background: 'radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%)' }} />
       </div>
 
-      {/* ── Panel derecho — formulario ── */}
-      <div className="flex-1 flex items-center justify-center bg-white px-8 py-12">
-        <div className="w-full max-w-[360px]">
+      {/* Card */}
+      <div
+        className="relative w-full max-w-[400px] rounded-3xl px-8 pt-10 pb-8"
+        style={{
+          background: '#ffffff',
+          boxShadow: '0 20px 60px rgba(0,0,0,0.2), 0 4px 16px rgba(0,0,0,0.1)',
+        }}
+      >
+        {/* Avatar */}
+        <div className="flex justify-center mb-6">
+          <div
+            className="w-20 h-20 rounded-full flex items-center justify-center"
+            style={{ background: '#eef2f7' }}
+          >
+            <svg width="40" height="40" fill="none" viewBox="0 0 24 24" stroke="#9baabf" strokeWidth={1.25}>
+              <path strokeLinecap="round" strokeLinejoin="round"
+                d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+            </svg>
+          </div>
+        </div>
 
-          {/* Encabezado del form */}
-          <div className="mb-10">
-            {/* Acento dorado pequeño */}
-            <div
-              className="w-8 h-0.5 rounded-full mb-5"
-              style={{ background: 'linear-gradient(90deg, #b8922a, #e8c96e)' }}
+        {/* Título */}
+        <h1
+          className="text-center text-2xl font-bold mb-6"
+          style={{ color: '#0d2d5a' }}
+        >
+          Iniciar sesión
+        </h1>
+
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+
+          {/* Usuario */}
+          <div
+            className="flex items-center gap-3 h-12 px-4 rounded-full transition-all duration-150"
+            style={{ background: '#eef2f7' }}
+            onFocusCapture={e => e.currentTarget.style.boxShadow = '0 0 0 2px #1a6fc4'}
+            onBlurCapture={e => e.currentTarget.style.boxShadow = 'none'}
+          >
+            <span style={{ color: '#9baabf' }}><IconUser /></span>
+            <input
+              type="text"
+              value={usuario}
+              onChange={e => setUsuario(e.target.value)}
+              placeholder="Usuario o nombre de usuario"
+              required
+              autoFocus
+              className="flex-1 bg-transparent text-sm focus:outline-none"
+              style={{ color: '#0d2d5a' }}
             />
-            <h1
-              className="text-[28px] font-black tracking-tight leading-none"
-              style={{ color: '#0d1f45' }}
-            >
-              Iniciar sesión
-            </h1>
-            <p className="mt-2 text-sm" style={{ color: '#8a95a3' }}>
-              Ingresá tus credenciales para acceder al sistema.
-            </p>
           </div>
 
-          {/* Formulario */}
-          <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-
-            {/* Usuario */}
-            <div className="flex flex-col gap-1.5">
-              <label
-                htmlFor="usuario"
-                className="text-xs font-bold uppercase tracking-widest"
-                style={{ color: '#8a95a3' }}
-              >
-                Usuario
-              </label>
-              <div
-                className="flex items-center gap-3 h-12 px-4 rounded-xl transition-all duration-150"
-                style={{
-                  background: '#f3f5f8',
-                  border: '1.5px solid transparent',
-                }}
-                onFocusCapture={e => e.currentTarget.style.cssText = 'background:#fff;border:1.5px solid #0d1f45;border-radius:0.75rem;display:flex;align-items:center;gap:0.75rem;height:3rem;padding:0 1rem;transition:all 150ms;'}
-                onBlurCapture={e => e.currentTarget.style.cssText = 'background:#f3f5f8;border:1.5px solid transparent;border-radius:0.75rem;display:flex;align-items:center;gap:0.75rem;height:3rem;padding:0 1rem;transition:all 150ms;'}
-              >
-                <span style={{ color: '#8a95a3' }}><IconUser /></span>
-                <input
-                  id="usuario"
-                  type="text"
-                  value={usuario}
-                  onChange={e => setUsuario(e.target.value)}
-                  placeholder="Ingrese su usuario"
-                  required
-                  autoFocus
-                  className="flex-1 bg-transparent text-sm font-medium focus:outline-none"
-                  style={{ color: '#0d1f45' }}
-                />
-              </div>
-            </div>
-
-            {/* Contraseña */}
-            <div className="flex flex-col gap-1.5">
-              <label
-                htmlFor="password"
-                className="text-xs font-bold uppercase tracking-widest"
-                style={{ color: '#8a95a3' }}
-              >
-                Contraseña
-              </label>
-              <div
-                className="flex items-center gap-3 h-12 px-4 rounded-xl transition-all duration-150"
-                style={{
-                  background: '#f3f5f8',
-                  border: '1.5px solid transparent',
-                }}
-                onFocusCapture={e => e.currentTarget.style.cssText = 'background:#fff;border:1.5px solid #0d1f45;border-radius:0.75rem;display:flex;align-items:center;gap:0.75rem;height:3rem;padding:0 1rem;transition:all 150ms;'}
-                onBlurCapture={e => e.currentTarget.style.cssText = 'background:#f3f5f8;border:1.5px solid transparent;border-radius:0.75rem;display:flex;align-items:center;gap:0.75rem;height:3rem;padding:0 1rem;transition:all 150ms;'}
-              >
-                <span style={{ color: '#8a95a3' }}><IconLock /></span>
-                <input
-                  id="password"
-                  type={verPassword ? 'text' : 'password'}
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-                  placeholder="Ingrese su contraseña"
-                  required
-                  className="flex-1 bg-transparent text-sm font-medium focus:outline-none"
-                  style={{ color: '#0d1f45' }}
-                />
-                <button
-                  type="button"
-                  onClick={() => setVerPassword(v => !v)}
-                  tabIndex={-1}
-                  className="transition-colors duration-150"
-                  style={{ color: '#8a95a3' }}
-                  onMouseEnter={e => e.currentTarget.style.color = '#0d1f45'}
-                  onMouseLeave={e => e.currentTarget.style.color = '#8a95a3'}
-                >
-                  {verPassword ? <IconEyeOn /> : <IconEyeOff />}
-                </button>
-              </div>
-            </div>
-
-            {/* Error */}
-            {error && (
-              <div
-                className="flex items-center gap-2.5 rounded-xl px-4 py-3 text-sm font-medium"
-                style={{
-                  background: '#fef2f2',
-                  border: '1px solid rgba(220,38,38,0.15)',
-                  color: '#b91c1c',
-                }}
-              >
-                <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20" className="shrink-0">
-                  <path fillRule="evenodd" clipRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" />
-                </svg>
-                {error}
-              </div>
-            )}
-
-            {/* Botón */}
+          {/* Contraseña */}
+          <div
+            className="flex items-center gap-3 h-12 px-4 rounded-full transition-all duration-150"
+            style={{ background: '#eef2f7' }}
+            onFocusCapture={e => e.currentTarget.style.boxShadow = '0 0 0 2px #1a6fc4'}
+            onBlurCapture={e => e.currentTarget.style.boxShadow = 'none'}
+          >
+            <span style={{ color: '#9baabf' }}><IconLock /></span>
+            <input
+              type={verPassword ? 'text' : 'password'}
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              placeholder="Contraseña"
+              required
+              className="flex-1 bg-transparent text-sm focus:outline-none"
+              style={{ color: '#0d2d5a' }}
+            />
             <button
-              type="submit"
-              disabled={cargando}
-              className="w-full h-12 rounded-xl text-sm font-bold tracking-wide text-white transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed mt-1"
-              style={{
-                background: 'linear-gradient(135deg, #0d1f45 0%, #1a3a6e 100%)',
-                border: '1.5px solid #b8922a',
-                boxShadow: '0 4px 16px rgba(13,31,69,0.25)',
-              }}
-              onMouseEnter={e => { if (!cargando) e.currentTarget.style.boxShadow = '0 6px 20px rgba(13,31,69,0.35)' }}
-              onMouseLeave={e => { if (!cargando) e.currentTarget.style.boxShadow = '0 4px 16px rgba(13,31,69,0.25)' }}
+              type="button"
+              onClick={() => setVerPassword(v => !v)}
+              tabIndex={-1}
+              style={{ color: '#9baabf' }}
+              onMouseEnter={e => e.currentTarget.style.color = '#1a6fc4'}
+              onMouseLeave={e => e.currentTarget.style.color = '#9baabf'}
             >
-              {cargando ? (
-                <span className="flex items-center justify-center gap-2">
-                  <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
-                  </svg>
-                  Iniciando sesión...
-                </span>
-              ) : 'Iniciar Sesión'}
+              {verPassword ? <IconEyeOn /> : <IconEyeOff />}
             </button>
+          </div>
 
-            {/* Links */}
-            <div className="flex items-center justify-center gap-4 pt-1">
-              {['Olvidé mi contraseña', 'Soporte técnico'].map((txt, i) => (
-                <span key={txt} className="flex items-center gap-4">
-                  {i > 0 && <span style={{ color: '#e2e5ea' }}>|</span>}
-                  <a
-                    href="#"
-                    className="text-xs transition-colors duration-150"
-                    style={{ color: '#8a95a3' }}
-                    onMouseEnter={e => e.currentTarget.style.color = '#0d1f45'}
-                    onMouseLeave={e => e.currentTarget.style.color = '#8a95a3'}
-                  >
-                    {txt}
-                  </a>
-                </span>
-              ))}
+          {/* Recordarme + olvidé */}
+          <div className="flex items-center justify-between px-1 mt-1">
+            <label className="flex items-center gap-2 cursor-pointer select-none">
+              <input
+                type="checkbox"
+                checked={recordarme}
+                onChange={e => setRecordarme(e.target.checked)}
+                className="w-4 h-4 rounded cursor-pointer"
+                style={{ accentColor: '#1a6fc4' }}
+              />
+              <span className="text-xs" style={{ color: '#6b7a8d' }}>Recordarme</span>
+            </label>
+            <a
+              href="#"
+              className="text-xs transition-colors duration-150"
+              style={{ color: '#1a6fc4' }}
+              onMouseEnter={e => e.currentTarget.style.color = '#0d3d7a'}
+              onMouseLeave={e => e.currentTarget.style.color = '#1a6fc4'}
+            >
+              Olvidé mi contraseña
+            </a>
+          </div>
+
+          {/* Error */}
+          {error && (
+            <div
+              className="flex items-center gap-2 rounded-full px-4 py-2.5 text-xs font-medium"
+              style={{ background: '#fef2f2', color: '#b91c1c', border: '1px solid rgba(220,38,38,0.15)' }}
+            >
+              <svg width="14" height="14" fill="currentColor" viewBox="0 0 20 20" className="shrink-0">
+                <path fillRule="evenodd" clipRule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" />
+              </svg>
+              {error}
             </div>
+          )}
 
-          </form>
-        </div>
+          {/* Botón */}
+          <button
+            type="submit"
+            disabled={cargando}
+            className="w-full h-12 rounded-full text-sm font-bold text-white mt-2 transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed"
+            style={{
+              background: 'linear-gradient(135deg, #1a6fc4 0%, #1259a7 100%)',
+              boxShadow: '0 4px 16px rgba(26,111,196,0.4)',
+            }}
+            onMouseEnter={e => { if (!cargando) e.currentTarget.style.boxShadow = '0 6px 24px rgba(26,111,196,0.55)' }}
+            onMouseLeave={e => { if (!cargando) e.currentTarget.style.boxShadow = '0 4px 16px rgba(26,111,196,0.4)' }}
+          >
+            {cargando ? (
+              <span className="flex items-center justify-center gap-2">
+                <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                </svg>
+                Iniciando sesión...
+              </span>
+            ) : 'Iniciar sesión'}
+          </button>
+
+          {/* Soporte */}
+          <p className="text-center text-xs mt-1" style={{ color: '#9baabf' }}>
+            ¿Problemas para ingresar?{' '}
+            <a
+              href="#"
+              className="font-medium transition-colors duration-150"
+              style={{ color: '#1a6fc4' }}
+              onMouseEnter={e => e.currentTarget.style.color = '#0d3d7a'}
+              onMouseLeave={e => e.currentTarget.style.color = '#1a6fc4'}
+            >
+              Soporte técnico
+            </a>
+          </p>
+
+        </form>
       </div>
-
     </div>
   )
 }
