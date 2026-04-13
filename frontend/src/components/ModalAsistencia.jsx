@@ -2,55 +2,65 @@ import { useState } from 'react'
 import { ESTADOS } from './EstadoBadge'
 import api from '../lib/api'
 
-/* ─── Heroicon SVGs por estado (no emojis) ─── */
+/* ─────────────────────────────────────────────────────────────────────────────
+   Íconos SVG filled (solid) — más legibles en estado activo sobre fondo azul
+   Fuente: Heroicons solid / Bootstrap Icons adaptados
+───────────────────────────────────────────────────────────────────────────── */
 const ICONOS = {
+  /* Check circle filled */
   PRESENTE: (props) => (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+    <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clipRule="evenodd" />
     </svg>
   ),
+  /* X circle filled */
   AUSENTE: (props) => (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+    <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <path fillRule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-1.72 6.97a.75.75 0 10-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 101.06 1.06L12 13.06l1.72 1.72a.75.75 0 101.06-1.06L13.06 12l1.72-1.72a.75.75 0 10-1.06-1.06L12 10.94l-1.72-1.72z" clipRule="evenodd" />
     </svg>
   ),
+  /* Calendar filled */
   DESCANSO_SEMANAL: (props) => (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+    <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <path d="M12.75 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM7.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM8.25 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM9.75 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM10.5 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM12.75 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM14.25 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 13.5a.75.75 0 100-1.5.75.75 0 000 1.5z" />
+      <path fillRule="evenodd" d="M6.75 2.25A.75.75 0 017.5 3v1.5h9V3A.75.75 0 0118 3v1.5h.75a3 3 0 013 3v11.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V7.5a3 3 0 013-3H6V3a.75.75 0 01.75-.75zm13.5 9a1.5 1.5 0 00-1.5-1.5H5.25a1.5 1.5 0 00-1.5 1.5v7.5a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5v-7.5z" clipRule="evenodd" />
     </svg>
   ),
+  /* Plus circle filled (médico) */
   DESCANSO_MEDICO: (props) => (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+    <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <path fillRule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z" clipRule="evenodd" />
     </svg>
   ),
+  /* Users filled (paternidad / familia) */
   PATERNIDAD: (props) => (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+    <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <path d="M4.5 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM14.25 8.625a3.375 3.375 0 116.75 0 3.375 3.375 0 01-6.75 0zM1.5 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63l-.001-.122zM17.25 19.128l-.001.144a2.25 2.25 0 01-.233.96 10.088 10.088 0 005.06-1.01.75.75 0 00.42-.643 4.875 4.875 0 00-6.957-4.611 8.586 8.586 0 011.71 5.157v.003z" />
     </svg>
   ),
+  /* Sun filled (vacaciones) */
   VACACIONES: (props) => (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+    <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z" />
     </svg>
   ),
 }
 
-/* Colores por estado: icono activo y fondo activo */
-const ESTADO_COLORS = {
-  PRESENTE:         { iconColor: '#1DB070', activeBg: '#E8F8F0', activeBorder: '#1DB070' },
-  AUSENTE:          { iconColor: '#E53E3E', activeBg: '#FEF2F2', activeBorder: '#E53E3E' },
-  DESCANSO_SEMANAL: { iconColor: '#4A5BDB', activeBg: '#EEF0FB', activeBorder: '#4A5BDB' },
-  DESCANSO_MEDICO:  { iconColor: '#F59E0B', activeBg: '#FFF5E6', activeBorder: '#F59E0B' },
-  PATERNIDAD:       { iconColor: '#8B5CF6', activeBg: '#F5F3FF', activeBorder: '#8B5CF6' },
-  VACACIONES:       { iconColor: '#F97316', activeBg: '#FFF7ED', activeBorder: '#F97316' },
+/* Config de colores por estado — estado inactivo usa grises neutros */
+const ESTADO_CFG = {
+  PRESENTE:         { color: '#1DB070', bg: '#E8F8F0', border: '#1DB070' },
+  AUSENTE:          { color: '#E53E3E', bg: '#FEF2F2', border: '#E53E3E' },
+  DESCANSO_SEMANAL: { color: '#1A56DB', bg: '#EEF2FF', border: '#1A56DB' },
+  DESCANSO_MEDICO:  { color: '#D97706', bg: '#FFFBEB', border: '#D97706' },
+  PATERNIDAD:       { color: '#7C3AED', bg: '#F5F3FF', border: '#7C3AED' },
+  VACACIONES:       { color: '#EA580C', bg: '#FFF7ED', border: '#EA580C' },
 }
 
 export default function ModalAsistencia({ trabajador, onClose, onGuardado }) {
-  const [estado,     setEstado]     = useState(trabajador.registro?.estado ?? '')
+  const [estado,      setEstado]      = useState(trabajador.registro?.estado ?? '')
   const [observacion, setObservacion] = useState(trabajador.registro?.observacion ?? '')
-  const [cargando,   setCargando]   = useState(false)
-  const [error,      setError]      = useState('')
+  const [cargando,    setCargando]    = useState(false)
+  const [error,       setError]       = useState('')
 
   async function handleGuardar() {
     if (!estado) { setError('Seleccioná un estado'); return }
@@ -67,160 +77,234 @@ export default function ModalAsistencia({ trabajador, onClose, onGuardado }) {
     }
   }
 
+  /* ID visible: si el dni empieza con PENDING- mostramos "Sin código", si no mostramos el número */
+  const idVisible = trabajador.dni?.startsWith('PENDING-')
+    ? 'Sin código asignado'
+    : `ID: ${trabajador.dni}`
+
   return (
     <div
-      className="fixed inset-0 flex items-end sm:items-center justify-center p-0 sm:p-4 z-50"
-      style={{ background: 'rgba(26,31,54,0.45)', backdropFilter: 'blur(4px)' }}
       onClick={(e) => e.target === e.currentTarget && onClose()}
+      style={{
+        position: 'fixed', inset: 0, zIndex: 50,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        padding: '16px',
+        background: 'rgba(15,23,42,0.5)',
+        backdropFilter: 'blur(6px)',
+        WebkitBackdropFilter: 'blur(6px)',
+      }}
     >
-      <div
-        className="w-full sm:max-w-md"
-        style={{
-          background: '#FFFFFF',
-          borderRadius: '24px 24px 0 0',
-          boxShadow: '0 -4px 32px rgba(0,0,0,0.12)',
-        }}
-        /* Desktop: full rounded */
-        onMouseEnter={() => {}}
-      >
-        <style>{`@media(min-width:640px){.modal-sheet{border-radius:20px!important;box-shadow:0 8px 40px rgba(0,0,0,0.14)!important;}}`}</style>
-        <div className="modal-sheet w-full sm:max-w-md" style={{ background: 'transparent' }}>
+      <div style={{
+        width: '100%', maxWidth: '448px',
+        background: '#FFFFFF',
+        borderRadius: '20px',
+        boxShadow: '0 24px 64px rgba(0,0,0,0.18), 0 4px 16px rgba(0,0,0,0.08)',
+        overflow: 'hidden',
+        fontFamily: 'Inter, system-ui, sans-serif',
+      }}>
 
-          {/* Handle (mobile) */}
-          <div className="flex justify-center pt-3 pb-1 sm:hidden">
-            <div className="w-10 h-1 rounded-full" style={{ background: '#E8ECF4' }} />
-          </div>
-
-          {/* Header */}
-          <div className="flex items-center gap-3 px-6 py-5" style={{ borderBottom: '1px solid #E8ECF4' }}>
-            <div
-              className="w-12 h-12 rounded-2xl font-bold text-lg flex items-center justify-center shrink-0"
-              style={{ background: '#EEF0FB', color: '#1A56DB' }}
-            >
-              {trabajador.apellido[0]?.toUpperCase()}
+        {/* ── Header ── */}
+        <div style={{ padding: '24px 24px 20px', borderBottom: '1px solid #F1F5F9' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+              {/* Avatar circular sólido azul */}
+              <div style={{
+                width: '48px', height: '48px', borderRadius: '50%',
+                background: '#1A56DB', color: '#FFFFFF',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontWeight: 700, fontSize: '18px', flexShrink: 0,
+                letterSpacing: '-0.02em',
+              }}>
+                {trabajador.apellido[0]?.toUpperCase()}
+              </div>
+              <div>
+                <h2 style={{ fontSize: '16px', fontWeight: 700, color: '#0F172A', margin: 0, lineHeight: 1.3 }}>
+                  {trabajador.apellido}, {trabajador.nombre}
+                </h2>
+                <p style={{ fontSize: '12px', color: '#64748B', margin: '2px 0 0', fontWeight: 500 }}>
+                  {idVisible}
+                </p>
+              </div>
             </div>
-            <div className="flex-1 min-w-0">
-              <h2 className="font-bold text-base leading-tight truncate" style={{ color: '#1A1F36' }}>
-                {trabajador.apellido}, {trabajador.nombre}
-              </h2>
-              <p className="text-xs mt-1" style={{ color: '#8A92A6' }}>Código {trabajador.dni}</p>
-            </div>
+            {/* Close button */}
             <button
               onClick={onClose}
-              className="w-9 h-9 rounded-xl flex items-center justify-center transition-colors hover:bg-[#F4F6FB] shrink-0"
               aria-label="Cerrar"
+              style={{
+                width: '32px', height: '32px', borderRadius: '8px',
+                border: 'none', background: 'transparent', cursor: 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                color: '#94A3B8', flexShrink: 0,
+              }}
+              onMouseEnter={e => { e.currentTarget.style.background = '#F1F5F9'; e.currentTarget.style.color = '#475569' }}
+              onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#94A3B8' }}
             >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} style={{ color: '#8A92A6' }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
           </div>
-
-          {/* Estados */}
-          <div className="px-6 pt-6 pb-4">
-            <p className="text-[11px] font-bold uppercase tracking-widest mb-4" style={{ color: '#8A92A6' }}>
-              Estado del día
-            </p>
-            <div className="grid grid-cols-2 gap-3">
-              {Object.entries(ESTADOS).map(([valor, { label }]) => {
-                const IconoEstado = ICONOS[valor]
-                const colors = ESTADO_COLORS[valor] ?? { iconColor: '#1A56DB', activeBg: '#EEF2FF', activeBorder: '#1A56DB' }
-                const isActive = estado === valor
-                return (
-                  <button
-                    key={valor}
-                    onClick={() => setEstado(valor)}
-                    className="flex items-center gap-3 px-4 py-3.5 rounded-xl text-left transition-all min-h-[56px]"
-                    style={{
-                      border:     `2px solid ${isActive ? colors.activeBorder : '#E8ECF4'}`,
-                      background: isActive ? colors.activeBg : '#F8FAFC',
-                      boxShadow:  isActive ? `0 0 0 3px ${colors.activeBorder}22` : 'none',
-                    }}
-                  >
-                    <IconoEstado
-                      className="w-5 h-5 shrink-0"
-                      style={{ color: isActive ? colors.iconColor : '#8A92A6' }}
-                    />
-                    <span
-                      className="text-sm font-semibold leading-tight"
-                      style={{ color: isActive ? colors.iconColor : '#4A5568' }}
-                    >
-                      {label}
-                    </span>
-                  </button>
-                )
-              })}
-            </div>
-          </div>
-
-          {/* Divisor */}
-          <div className="mx-6" style={{ borderTop: '1px solid #F0F4F8' }} />
-
-          {/* Observación */}
-          <div className="px-6 pt-4 pb-4">
-            <label className="block text-[11px] font-bold uppercase tracking-widest mb-3" style={{ color: '#8A92A6' }}>
-              Observación <span className="normal-case font-normal tracking-normal">(opcional)</span>
-            </label>
-            <textarea
-              value={observacion}
-              onChange={(e) => setObservacion(e.target.value)}
-              rows={3}
-              maxLength={500}
-              className="w-full rounded-xl px-4 py-3 text-sm resize-none transition-all outline-none"
-              style={{
-                border: '1px solid #E8ECF4',
-                background: '#F8FAFC',
-                color: '#1A1F36',
-                minHeight: '80px',
-                lineHeight: '1.5',
-              }}
-              onFocus={e => { e.currentTarget.style.borderColor = '#1A56DB'; e.currentTarget.style.background = '#FFFFFF'; e.currentTarget.style.boxShadow = '0 0 0 3px rgba(26,86,219,0.10)' }}
-              onBlur={e  => { e.currentTarget.style.borderColor = '#E8ECF4'; e.currentTarget.style.background = '#F8FAFC'; e.currentTarget.style.boxShadow = 'none' }}
-              placeholder="Ej: Certificado médico presentado"
-            />
-          </div>
-
-          {/* Error */}
-          {error && (
-            <div
-              className="mx-6 mb-3 flex items-center gap-2 text-sm px-4 py-3 rounded-xl"
-              style={{ background: '#FEF2F2', border: '1px solid #FECACA', color: '#DC2626' }}
-            >
-              <svg className="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clipRule="evenodd" />
-              </svg>
-              {error}
-            </div>
-          )}
-
-          {/* Actions */}
-          <div className="px-6 pb-7 pt-2 flex gap-3" style={{ borderTop: '1px solid #F0F4F8' }}>
-            <button
-              onClick={onClose}
-              className="flex-1 px-4 py-3 text-sm font-semibold rounded-xl transition-colors hover:bg-[#E8ECF4] min-h-[48px]"
-              style={{ background: '#F0F4F8', color: '#4A5568' }}
-            >
-              Cancelar
-            </button>
-            <button
-              onClick={handleGuardar}
-              disabled={cargando || !estado}
-              className="flex-1 px-4 py-3 text-sm font-semibold rounded-xl transition-opacity flex items-center justify-center gap-2 min-h-[48px] disabled:opacity-40 disabled:cursor-not-allowed"
-              style={{ background: '#1A56DB', color: '#FFFFFF', boxShadow: '0 4px 14px rgba(26,86,219,0.30)' }}
-            >
-              {cargando ? (
-                <>
-                  <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
-                  </svg>
-                  Guardando...
-                </>
-              ) : 'Guardar'}
-            </button>
-          </div>
-
         </div>
+
+        {/* ── Estado del Día ── */}
+        <div style={{ padding: '20px 24px 0' }}>
+          <h3 style={{ fontSize: '15px', fontWeight: 700, color: '#0F172A', margin: '0 0 4px' }}>
+            Estado del Día
+          </h3>
+          <p style={{ fontSize: '11px', fontWeight: 600, color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.08em', margin: '0 0 16px' }}>
+            Seleccione una categoría de asistencia
+          </p>
+
+          {/* Grid 2×3 */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+            {Object.entries(ESTADOS).map(([valor, { label }]) => {
+              const Icono = ICONOS[valor]
+              const cfg   = ESTADO_CFG[valor] ?? { color: '#1A56DB', bg: '#EEF2FF', border: '#1A56DB' }
+              const activo = estado === valor
+
+              return (
+                <button
+                  key={valor}
+                  onClick={() => { setEstado(valor); setError('') }}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: '10px',
+                    padding: '12px 14px', borderRadius: '12px',
+                    border: `1.5px solid ${activo ? cfg.border : '#E2E8F0'}`,
+                    background: activo ? cfg.color : '#FFFFFF',
+                    cursor: 'pointer', textAlign: 'left',
+                    transition: 'all 0.15s ease',
+                    minHeight: '52px',
+                  }}
+                  onMouseEnter={e => {
+                    if (!activo) {
+                      e.currentTarget.style.borderColor = cfg.border
+                      e.currentTarget.style.background = cfg.bg
+                    }
+                  }}
+                  onMouseLeave={e => {
+                    if (!activo) {
+                      e.currentTarget.style.borderColor = '#E2E8F0'
+                      e.currentTarget.style.background = '#FFFFFF'
+                    }
+                  }}
+                >
+                  <Icono style={{
+                    width: '20px', height: '20px', flexShrink: 0,
+                    color: activo ? '#FFFFFF' : cfg.color,
+                  }} />
+                  <span style={{
+                    fontSize: '13px', fontWeight: 600, lineHeight: 1.2,
+                    color: activo ? '#FFFFFF' : '#1E293B',
+                  }}>
+                    {label}
+                  </span>
+                </button>
+              )
+            })}
+          </div>
+        </div>
+
+        {/* ── Observación ── */}
+        <div style={{ padding: '20px 24px 0' }}>
+          <label style={{
+            display: 'block', fontSize: '11px', fontWeight: 700,
+            textTransform: 'uppercase', letterSpacing: '0.08em',
+            color: '#94A3B8', marginBottom: '8px',
+          }}>
+            Observación <span style={{ textTransform: 'none', fontWeight: 400, fontSize: '11px' }}>(opcional)</span>
+          </label>
+          <textarea
+            value={observacion}
+            onChange={e => setObservacion(e.target.value)}
+            rows={3}
+            maxLength={500}
+            placeholder="Ingrese detalles adicionales sobre el estado de hoy..."
+            style={{
+              width: '100%', padding: '12px 14px',
+              border: '1.5px solid #E2E8F0', borderRadius: '12px',
+              background: '#F8FAFC', color: '#0F172A',
+              fontSize: '13px', lineHeight: 1.5,
+              resize: 'none', outline: 'none',
+              boxSizing: 'border-box', fontFamily: 'inherit',
+              transition: 'all 0.15s ease',
+            }}
+            onFocus={e => {
+              e.target.style.borderColor = '#1A56DB'
+              e.target.style.background = '#FFFFFF'
+              e.target.style.boxShadow = '0 0 0 3px rgba(26,86,219,0.10)'
+            }}
+            onBlur={e => {
+              e.target.style.borderColor = '#E2E8F0'
+              e.target.style.background = '#F8FAFC'
+              e.target.style.boxShadow = 'none'
+            }}
+          />
+        </div>
+
+        {/* ── Error ── */}
+        {error && (
+          <div style={{
+            margin: '12px 24px 0',
+            display: 'flex', alignItems: 'center', gap: '8px',
+            padding: '10px 14px', borderRadius: '10px',
+            background: '#FEF2F2', border: '1px solid #FECACA', color: '#DC2626',
+            fontSize: '13px', fontWeight: 500,
+          }}>
+            <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" style={{ flexShrink: 0 }}>
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clipRule="evenodd" />
+            </svg>
+            {error}
+          </div>
+        )}
+
+        {/* ── Footer ── */}
+        <div style={{
+          padding: '20px 24px 24px',
+          display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '12px',
+        }}>
+          <button
+            onClick={onClose}
+            style={{
+              padding: '11px 24px', borderRadius: '10px',
+              border: 'none', background: 'transparent', cursor: 'pointer',
+              fontSize: '14px', fontWeight: 600, color: '#64748B',
+              fontFamily: 'inherit',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.background = '#F1F5F9' }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}
+          >
+            Cancelar
+          </button>
+          <button
+            onClick={handleGuardar}
+            disabled={cargando || !estado}
+            style={{
+              padding: '11px 32px', borderRadius: '10px',
+              border: 'none', cursor: cargando || !estado ? 'not-allowed' : 'pointer',
+              background: cargando || !estado ? '#93C5FD' : '#1A56DB',
+              color: '#FFFFFF', fontSize: '14px', fontWeight: 600,
+              display: 'flex', alignItems: 'center', gap: '8px',
+              boxShadow: cargando || !estado ? 'none' : '0 4px 14px rgba(26,86,219,0.30)',
+              transition: 'all 0.15s ease', fontFamily: 'inherit',
+              opacity: cargando || !estado ? 0.7 : 1,
+            }}
+            onMouseEnter={e => { if (!cargando && estado) e.currentTarget.style.background = '#1D4ED8' }}
+            onMouseLeave={e => { if (!cargando && estado) e.currentTarget.style.background = '#1A56DB' }}
+          >
+            {cargando ? (
+              <>
+                <svg style={{ width: '16px', height: '16px', animation: 'modal-spin 1s linear infinite' }}
+                     fill="none" viewBox="0 0 24 24">
+                  <circle style={{ opacity: 0.25 }} cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path style={{ opacity: 0.75 }} fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                </svg>
+                Guardando...
+              </>
+            ) : 'Guardar'}
+          </button>
+        </div>
+
+        <style>{`@keyframes modal-spin { to { transform: rotate(360deg); } }`}</style>
       </div>
     </div>
   )
