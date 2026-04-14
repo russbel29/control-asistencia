@@ -66,6 +66,7 @@ async function obtenerDia(areaId) {
       nombre: true,
       apellido: true,
       dni: true,
+      modalidad: true,
       registros: {
         where: { fecha: hoy },
         select: { id: true, estado: true, observacion: true, actualizadoEn: true }
@@ -79,6 +80,7 @@ async function obtenerDia(areaId) {
     nombre: t.nombre,
     apellido: t.apellido,
     dni: t.dni,
+    modalidad: t.modalidad,
     registro: t.registros[0] || null
   }))
 }

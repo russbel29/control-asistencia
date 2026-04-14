@@ -9,9 +9,10 @@
 
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background-color: #f9f9ff;
-  color: #141b2b;
+  background-color: #F0F2F8;
+  color: #1A1F36;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .donut-chart {

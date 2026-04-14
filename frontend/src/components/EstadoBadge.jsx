@@ -1,29 +1,35 @@
+/* Colores alineados con el design system (Slate Sync palette) */
 const ESTADOS = {
-  PRESENTE:        { label: 'Presente',         color: 'bg-green-100 text-green-800' },
-  AUSENTE:         { label: 'Ausente',           color: 'bg-red-100 text-red-800' },
-  DESCANSO_SEMANAL:{ label: 'Descanso Semanal',  color: 'bg-blue-100 text-blue-800' },
-  DESCANSO_MEDICO: { label: 'Descanso Médico',   color: 'bg-yellow-100 text-yellow-800' },
-  PATERNIDAD:      { label: 'Paternidad',        color: 'bg-purple-100 text-purple-800' },
-  VACACIONES:      { label: 'Vacaciones',        color: 'bg-orange-100 text-orange-800' },
+  PRESENTE:         { label: 'Presente',        bg: '#E8F8F0', color: '#1DB070' },
+  AUSENTE:          { label: 'Ausente',          bg: '#FEF2F2', color: '#E53E3E' },
+  DESCANSO_SEMANAL: { label: 'Descanso Semanal', bg: '#EEF0FB', color: '#4A5BDB' },
+  DESCANSO_MEDICO:  { label: 'Descanso Médico',  bg: '#FFF5E6', color: '#F59E0B' },
+  PATERNIDAD:       { label: 'Paternidad',       bg: '#F5F3FF', color: '#8B5CF6' },
+  VACACIONES:       { label: 'Vacaciones',       bg: '#FFF7ED', color: '#F97316' },
 }
 
 export default function EstadoBadge({ estado }) {
   if (!estado) {
     return (
-      <span className="inline-block bg-gray-100 text-gray-500 text-xs font-medium px-2.5 py-1 rounded-full">
+      <span
+        className="inline-block text-xs font-semibold px-2.5 py-1 rounded-full"
+        style={{ background: '#F4F6FB', color: '#8A92A6' }}
+      >
         Sin registrar
       </span>
     )
   }
 
-  const { label, color } = ESTADOS[estado] ?? { label: estado, color: 'bg-gray-100 text-gray-800' }
+  const { label, bg, color } = ESTADOS[estado] ?? { label: estado, bg: '#F4F6FB', color: '#8A92A6' }
 
   return (
-    <span className={`inline-block text-xs font-medium px-2.5 py-1 rounded-full ${color}`}>
+    <span
+      className="inline-block text-xs font-semibold px-2.5 py-1 rounded-full"
+      style={{ background: bg, color }}
+    >
       {label}
     </span>
   )
 }
 
-// Exportamos los estados para usarlos en el selector
 export { ESTADOS }

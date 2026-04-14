@@ -3,8 +3,9 @@ import { useAuth } from '../context/AuthContext'
 import api from '../lib/api'
 import EstadoBadge from '../components/EstadoBadge'
 import ModalAsistencia from '../components/ModalAsistencia'
+import ModalAgregarTrabajador from '../components/ModalAgregarTrabajador'
 
-/* ─── Inline SVG Icons (Heroicons Outline 24×24, strokeWidth 1.5) ─── */
+/* ─── Inline SVG Icons (Heroicons Outline 24×24) ─── */
 const Icons = {
   Building: (props) => (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
@@ -18,12 +19,12 @@ const Icons = {
   ),
   Users: (props) => (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
     </svg>
   ),
   FileText: (props) => (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
     </svg>
   ),
   Settings: (props) => (
@@ -49,7 +50,7 @@ const Icons = {
   ),
   Calendar: (props) => (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
     </svg>
   ),
   Search: (props) => (
@@ -72,6 +73,11 @@ const Icons = {
       <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
     </svg>
   ),
+  ChevronLeft: (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+    </svg>
+  ),
   UserOff: (props) => (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
       <path strokeLinecap="round" strokeLinejoin="round" d="M22 10.5h-6m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z" />
@@ -82,25 +88,100 @@ const Icons = {
       <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
     </svg>
   ),
+  UserPlus: (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z" />
+    </svg>
+  ),
+  Grid: (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+    </svg>
+  ),
+  List: (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+    </svg>
+  ),
+  Download: (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+    </svg>
+  ),
 }
 
-/* ─── Sidebar nav items ─── */
 const NAV_ITEMS = [
-  { icon: Icons.Users, label: 'Trabajadores' },
+  { icon: Icons.Users,    label: 'Trabajadores' },
   { icon: Icons.FileText, label: 'Reportes' },
   { icon: Icons.Settings, label: 'Configuración' },
-  { icon: Icons.Help, label: 'Ayuda' },
+  { icon: Icons.Help,     label: 'Ayuda' },
 ]
+
+/* ─────────────────────────────────────────────────────────────
+   KPI CARD — borde superior de color como en la referencia
+───────────────────────────────────────────────────────────── */
+function KpiCard({ label, value, icon: Icon, accentColor, iconBg, iconColor, valueColor, children }) {
+  return (
+    <div
+      style={{
+        background: '#FFFFFF',
+        border: '1px solid #E8ECF4',
+        borderRadius: '12px',
+        borderTop: `3px solid ${accentColor}`,
+        boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+        padding: '20px',
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '12px' }}>
+        <div style={{ minWidth: 0 }}>
+          <p style={{
+            fontSize: '10px',
+            fontWeight: 700,
+            textTransform: 'uppercase',
+            letterSpacing: '0.08em',
+            color: '#8A92A6',
+            marginBottom: '8px',
+          }}>
+            {label}
+          </p>
+          <p style={{
+            fontSize: '32px',
+            fontWeight: 700,
+            lineHeight: 1,
+            color: valueColor ?? '#1A1F36',
+            fontVariantNumeric: 'tabular-nums',
+          }}>
+            {value}
+          </p>
+        </div>
+        <div style={{
+          width: '44px',
+          height: '44px',
+          borderRadius: '50%',
+          background: iconBg,
+          color: iconColor,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexShrink: 0,
+        }}>
+          {children ?? <Icon style={{ width: '20px', height: '20px' }} />}
+        </div>
+      </div>
+    </div>
+  )
+}
 
 export default function Asistencia() {
   const { fiscal, logout } = useAuth()
-  const [registros, setRegistros] = useState([])
-  const [cargando, setCargando] = useState(true)
-  const [error, setError] = useState('')
-  const [busqueda, setBusqueda] = useState('')
+  const [registros, setRegistros]   = useState([])
+  const [cargando, setCargando]     = useState(true)
+  const [error, setError]           = useState('')
+  const [busqueda, setBusqueda]     = useState('')
   const [trabajadorSeleccionado, setTrabajadorSeleccionado] = useState(null)
-  const [fecha, setFecha] = useState('')
-  const [filtro, setFiltro] = useState('todos')
+  const [fecha, setFecha]           = useState('')
+  const [filtro, setFiltro]         = useState('todos')
+  const [mostrarAgregar, setMostrarAgregar] = useState(false)
 
   const cargarDia = useCallback(async () => {
     setCargando(true)
@@ -128,6 +209,11 @@ export default function Asistencia() {
     )
   }
 
+  function handleTrabajadorAgregado() {
+    setMostrarAgregar(false)
+    cargarDia()
+  }
+
   const registrosFiltrados = registros
     .filter(r =>
       `${r.apellido} ${r.nombre}`.toLowerCase().includes(busqueda.toLowerCase()) ||
@@ -135,245 +221,485 @@ export default function Asistencia() {
     )
     .filter(r => {
       if (filtro === 'registrados') return r.registro
-      if (filtro === 'pendientes') return !r.registro
+      if (filtro === 'pendientes')  return !r.registro
       return true
     })
 
   const registrados = registros.filter(r => r.registro).length
-  const total = registros.length
-  const pendientes = total - registrados
-  const porcentaje = total > 0 ? Math.round((registrados / total) * 100) : 0
-  const nombreArea = fiscal?.area?.nombre ?? fiscal?.area ?? ''
+  const total       = registros.length
+  const pendientes  = total - registrados
+  const porcentaje  = total > 0 ? Math.round((registrados / total) * 100) : 0
+
+  const nombreArea   = fiscal?.area?.nombre ?? fiscal?.area ?? ''
   const nombreFiscal = fiscal?.nombre ?? ''
-  const iniciales = nombreFiscal.split(' ').map(p => p[0]).join('').slice(0, 2).toUpperCase()
+  const iniciales    = nombreFiscal.split(' ').map(p => p[0]).join('').slice(0, 2).toUpperCase()
 
   const fechaFormateada = fecha
-    ? new Date(fecha + 'T12:00:00').toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long' })
+    ? new Date(fecha + 'T12:00:00').toLocaleDateString('es-AR', {
+        weekday: 'long', day: 'numeric', month: 'long',
+      })
     : '...'
+  const fechaCap = fechaFormateada.charAt(0).toUpperCase() + fechaFormateada.slice(1)
+
+  /* Cálculo del donut SVG: circunferencia = 2π × r = 2π × 20 ≈ 125.66 */
+  const CIRCUNF = 125.66
+  const dashArray = `${(porcentaje / 100) * CIRCUNF} ${CIRCUNF}`
 
   return (
-    <div className="min-h-screen flex" style={{ background: '#f9f9ff' }}>
+    <div style={{ minHeight: '100dvh', display: 'flex', background: '#F0F2F8', fontFamily: 'Inter, system-ui, sans-serif' }}>
 
-      {/* ── Sidebar ── */}
-      <aside className="hidden md:flex flex-col h-screen w-64 py-6 px-4 gap-2 sticky top-0" style={{ background: '#f9f9ff' }}>
-        <div className="flex items-center gap-3 px-2 mb-8">
-          <div className="w-10 h-10 rounded-lg flex items-center justify-center text-white" style={{ background: '#1a56db' }}>
-            <Icons.Building className="w-5 h-5" />
+      {/* ══════════ SIDEBAR ══════════ */}
+      <aside style={{
+        display: 'none',
+        width: '220px',
+        flexShrink: 0,
+        background: '#FFFFFF',
+        borderRight: '1px solid #E8ECF4',
+        padding: '20px 12px',
+        flexDirection: 'column',
+        position: 'sticky',
+        top: 0,
+        height: '100vh',
+      }}
+      className="md-sidebar"
+      >
+        {/* Logo */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '0 8px', marginBottom: '32px' }}>
+          <div style={{
+            width: '36px', height: '36px', borderRadius: '10px',
+            background: '#1A56DB', display: 'flex', alignItems: 'center',
+            justifyContent: 'center', flexShrink: 0,
+          }}>
+            <Icons.Building style={{ width: '18px', height: '18px', color: '#FFFFFF' }} />
           </div>
-          <div>
-            <h1 className="text-sm font-semibold leading-tight" style={{ color: '#141b2b' }}>Fiscal {nombreArea}</h1>
-            <p className="text-[10px] font-medium uppercase tracking-[0.05em]" style={{ color: '#737686' }}>Administración</p>
+          <div style={{ minWidth: 0 }}>
+            <p style={{ fontSize: '13px', fontWeight: 700, color: '#1A1F36', lineHeight: 1.3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              Fiscal {nombreArea}
+            </p>
+            <p style={{ fontSize: '10px', fontWeight: 500, color: '#8A92A6', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+              Administración
+            </p>
           </div>
         </div>
-        <nav className="flex-1 space-y-1">
-          <a href="#" className="flex items-center gap-3 px-3 py-2.5 font-semibold rounded-lg" style={{ color: '#003fb1', background: '#f1f3ff' }}>
-            <Icons.Dashboard className="w-5 h-5" />
-            <span className="text-[12px] uppercase tracking-[0.05em]">Dashboard</span>
+
+        {/* Nav */}
+        <nav style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '2px' }}>
+          <a href="#" style={{
+            display: 'flex', alignItems: 'center', gap: '10px',
+            padding: '9px 12px', borderRadius: '8px',
+            background: '#EEF2FF', color: '#1A56DB',
+            textDecoration: 'none', fontWeight: 600, fontSize: '13px',
+          }}>
+            <Icons.Dashboard style={{ width: '16px', height: '16px', flexShrink: 0 }} />
+            Dashboard
           </a>
           {NAV_ITEMS.map(({ icon: Icon, label }) => (
-            <a key={label} href="#" className="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors hover:bg-[#f1f3ff]" style={{ color: '#737686' }}>
-              <Icon className="w-5 h-5" />
-              <span className="text-[12px] uppercase tracking-[0.05em]">{label}</span>
+            <a key={label} href="#" style={{
+              display: 'flex', alignItems: 'center', gap: '10px',
+              padding: '9px 12px', borderRadius: '8px',
+              color: '#8A92A6', textDecoration: 'none',
+              fontWeight: 500, fontSize: '13px',
+            }}>
+              <Icon style={{ width: '16px', height: '16px', flexShrink: 0 }} />
+              {label}
             </a>
           ))}
         </nav>
       </aside>
 
-      {/* ── Main ── */}
-      <main className="flex-1 flex flex-col min-w-0">
+      {/* ══════════ MAIN ══════════ */}
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
 
-        {/* Top Bar */}
-        <header className="flex justify-between items-center w-full px-6 h-16 bg-white sticky top-0 z-50" style={{ borderTop: '3px solid #1a56db' }}>
-          <div className="flex flex-col">
-            <span className="text-xl font-bold" style={{ color: '#141b2b' }}>{nombreArea}</span>
-            <span className="text-xs font-medium uppercase tracking-wider" style={{ color: '#737686' }}>Fiscal {nombreFiscal}</span>
+        {/* Top bar */}
+        <header style={{
+          background: '#FFFFFF',
+          borderBottom: '1px solid #E8ECF4',
+          padding: '0 24px',
+          height: '64px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          position: 'sticky',
+          top: 0,
+          zIndex: 40,
+        }}>
+          <div>
+            <p style={{ fontSize: '17px', fontWeight: 700, color: '#1A1F36', lineHeight: 1.2 }}>
+              {nombreArea}
+            </p>
+            <p style={{ fontSize: '11px', color: '#8A92A6', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+              Fiscal {nombreFiscal}
+            </p>
           </div>
-          <div className="flex items-center gap-4">
-            <button className="relative w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-50 transition-colors">
-              <Icons.Bell className="w-5 h-5" style={{ color: '#737686' }} />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            {/* Bell */}
+            <button style={{
+              width: '36px', height: '36px', borderRadius: '10px',
+              border: 'none', background: 'transparent', cursor: 'pointer',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }} aria-label="Notificaciones">
+              <Icons.Bell style={{ width: '20px', height: '20px', color: '#8A92A6' }} />
             </button>
-            <div className="flex items-center gap-3 pl-4 border-l border-gray-100">
-              <div className="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs" style={{ background: '#e9edff', color: '#003fb1' }}>
-                {iniciales}
-              </div>
-              <button onClick={logout} className="flex items-center gap-2 font-medium text-sm transition-colors" style={{ color: '#737686' }}>
-                <Icons.Logout className="w-5 h-5" />
-                <span>Salir</span>
-              </button>
+            {/* Avatar */}
+            <div style={{
+              width: '32px', height: '32px', borderRadius: '50%',
+              background: '#EEF2FF', color: '#1A56DB',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontWeight: 700, fontSize: '12px',
+            }}>
+              {iniciales}
             </div>
+            <div style={{ width: '1px', height: '24px', background: '#E8ECF4', margin: '0 4px' }} />
+            {/* Logout */}
+            <button onClick={logout} style={{
+              display: 'flex', alignItems: 'center', gap: '6px',
+              padding: '6px 12px', borderRadius: '8px',
+              border: 'none', background: 'transparent', cursor: 'pointer',
+              color: '#8A92A6', fontSize: '13px', fontWeight: 500,
+            }}>
+              <Icons.Logout style={{ width: '16px', height: '16px' }} />
+              Salir
+            </button>
           </div>
         </header>
 
-        {/* Page Content */}
-        <div className="p-8 space-y-8 max-w-7xl mx-auto w-full">
+        {/* Page content */}
+        <main style={{ flex: 1, padding: '28px 24px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
 
-          {/* Date & Title */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          {/* Page header */}
+          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
             <div>
-              <h2 className="text-2xl font-semibold" style={{ color: '#141b2b' }}>Asistencia del día</h2>
-              <p className="text-sm" style={{ color: '#737686' }}>Gestión de puntualidad y asistencia en tiempo real</p>
+              <h1 style={{ fontSize: '24px', fontWeight: 700, color: '#1A1F36', margin: 0 }}>
+                Asistencia del día
+              </h1>
+              <p style={{ fontSize: '13px', color: '#8A92A6', marginTop: '4px' }}>
+                Gestión de puntualidad y asistencia en tiempo real
+              </p>
             </div>
-            <div className="flex items-center bg-white px-4 py-2 rounded-full shadow-sm">
-              <Icons.Calendar className="w-5 h-5 mr-2" style={{ color: '#003fb1' }} />
-              <span className="font-bold capitalize" style={{ color: '#141b2b' }}>{fechaFormateada}</span>
+            {/* Date pill */}
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: '8px',
+              background: '#FFFFFF', border: '1px solid #E8ECF4',
+              borderRadius: '10px', padding: '8px 14px',
+              boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
+            }}>
+              <Icons.Calendar style={{ width: '16px', height: '16px', color: '#1A56DB', flexShrink: 0 }} />
+              <span style={{ fontSize: '13px', fontWeight: 600, color: '#1A1F36' }} className="capitalize">
+                {fechaCap}
+              </span>
+              <div style={{ display: 'flex', gap: '2px', marginLeft: '4px' }}>
+                <button style={{ width: '24px', height: '24px', borderRadius: '6px', border: 'none', background: 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }} aria-label="Día anterior">
+                  <Icons.ChevronLeft style={{ width: '14px', height: '14px', color: '#8A92A6' }} />
+                </button>
+                <button style={{ width: '24px', height: '24px', borderRadius: '6px', border: 'none', background: 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }} aria-label="Día siguiente">
+                  <Icons.ChevronRight style={{ width: '14px', height: '14px', color: '#8A92A6' }} />
+                </button>
+              </div>
             </div>
           </div>
 
-          {/* KPI Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* ── KPI Grid ── */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
+
             {/* Total */}
-            <div className="bg-white p-6 rounded-xl shadow-[0_8px_32px_rgba(20,27,43,0.04)]" style={{ borderLeft: '4px solid #003fb1' }}>
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-[12px] font-medium uppercase tracking-[0.05em] mb-2" style={{ color: '#737686' }}>Total Trabajadores</p>
-                  <h3 className="text-3xl font-bold" style={{ color: '#141b2b' }}>{total}</h3>
-                </div>
-                <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: 'rgba(0,63,177,0.1)', color: '#003fb1' }}>
-                  <Icons.Users className="w-5 h-5" />
-                </div>
-              </div>
-            </div>
+            <KpiCard label="Total Trabajadores" value={total}
+              accentColor="#1A56DB" iconBg="#EEF2FF" iconColor="#1A56DB"
+              icon={Icons.Users}
+            />
+
             {/* Registrados */}
-            <div className="bg-white p-6 rounded-xl shadow-[0_8px_32px_rgba(20,27,43,0.04)]" style={{ borderLeft: '4px solid #059669' }}>
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-[12px] font-medium uppercase tracking-[0.05em] mb-2" style={{ color: '#737686' }}>Registrados Hoy</p>
-                  <h3 className="text-3xl font-bold" style={{ color: '#059669' }}>{registrados}</h3>
-                </div>
-                <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: '#ecfdf5', color: '#059669' }}>
-                  <Icons.CheckCircle className="w-5 h-5" />
-                </div>
-              </div>
-            </div>
+            <KpiCard label="Registrados Hoy" value={registrados}
+              accentColor="#059669" iconBg="#ECFDF5" iconColor="#059669"
+              icon={Icons.CheckCircle} valueColor="#059669"
+            />
+
             {/* Pendientes */}
-            <div className="bg-white p-6 rounded-xl shadow-[0_8px_32px_rgba(20,27,43,0.04)]" style={{ borderLeft: '4px solid #d97706' }}>
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-[12px] font-medium uppercase tracking-[0.05em] mb-2" style={{ color: '#737686' }}>Pendientes</p>
-                  <h3 className="text-3xl font-bold" style={{ color: '#d97706' }}>{pendientes}</h3>
-                </div>
-                <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: '#fffbeb', color: '#d97706' }}>
-                  <Icons.Clock className="w-5 h-5" />
-                </div>
-              </div>
+            <KpiCard label="Pendientes" value={pendientes}
+              accentColor="#D97706" iconBg="#FFFBEB" iconColor="#D97706"
+              icon={Icons.Clock} valueColor={pendientes > 0 ? '#D97706' : '#1A1F36'}
+            />
+
+            {/* % Completado — con donut SVG */}
+            <KpiCard label="% Completado" value={`${porcentaje}%`}
+              accentColor="#1A56DB" iconBg="transparent" iconColor="#1A56DB"
+            >
+              <svg width="44" height="44" viewBox="0 0 52 52" style={{ transform: 'rotate(-90deg)' }}>
+                <circle cx="26" cy="26" r="20" fill="none" stroke="#EEF2FF" strokeWidth="6" />
+                <circle
+                  cx="26" cy="26" r="20" fill="none"
+                  stroke="#1A56DB" strokeWidth="6"
+                  strokeLinecap="round"
+                  strokeDasharray={dashArray}
+                  style={{ transition: 'stroke-dasharray 0.6s ease' }}
+                />
+              </svg>
+            </KpiCard>
+          </div>
+
+          {/* Progress bar */}
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
+              <span style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: '#8A92A6' }}>
+                Progreso de Registro
+              </span>
+              <span style={{ fontSize: '11px', fontWeight: 600, color: '#8A92A6' }}>
+                {porcentaje}% ({registrados}/{total})
+              </span>
             </div>
-            {/* % Completado */}
-            <div className="bg-white p-6 rounded-xl shadow-[0_8px_32px_rgba(20,27,43,0.04)]" style={{ borderLeft: '4px solid #1a56db' }}>
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-[12px] font-medium uppercase tracking-[0.05em] mb-2" style={{ color: '#737686' }}>% Completado</p>
-                  <h3 className="text-3xl font-bold" style={{ color: '#141b2b' }}>{porcentaje}%</h3>
-                </div>
-                <div className="donut-chart" style={{ background: `conic-gradient(#003fb1 0% ${porcentaje}%, #e9edff ${porcentaje}% 100%)` }}>
-                  <span className="z-10 text-[10px] font-bold" style={{ color: '#003fb1' }}>{porcentaje}%</span>
-                </div>
-              </div>
+            <div style={{ height: '6px', background: '#E2E8F0', borderRadius: '99px', overflow: 'hidden' }}>
+              <div style={{
+                height: '100%',
+                width: `${porcentaje}%`,
+                background: 'linear-gradient(90deg, #1A56DB 0%, #3B82F6 100%)',
+                borderRadius: '99px',
+                transition: 'width 0.6s ease',
+              }} />
             </div>
           </div>
 
-          {/* Progress Bar */}
-          <div className="space-y-2">
-            <div className="flex justify-between text-xs font-medium uppercase tracking-wider" style={{ color: '#737686' }}>
-              <span>Progreso de Registro</span>
-              <span>{porcentaje}% ({registrados}/{total})</span>
-            </div>
-            <div className="h-2 w-full rounded-full overflow-hidden" style={{ background: '#e1e8fd' }}>
-              <div className="h-full rounded-full transition-all duration-500" style={{ width: `${porcentaje}%`, background: 'linear-gradient(90deg, #003fb1, #1a56db)' }} />
-            </div>
-          </div>
-
-          {/* Filters & Search */}
-          <div className="bg-white p-4 rounded-xl shadow-[0_4px_16px_rgba(20,27,43,0.02)] flex flex-wrap items-center gap-4">
-            <div className="flex-1 min-w-[260px] relative">
-              <Icons.Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#737686' }} />
+          {/* Filters row */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+            {/* Search */}
+            <div style={{ flex: 1, minWidth: '200px', position: 'relative' }}>
+              <Icons.Search style={{
+                width: '16px', height: '16px',
+                position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)',
+                color: '#8A92A6', pointerEvents: 'none',
+              }} />
               <input
                 type="text"
                 value={busqueda}
                 onChange={e => setBusqueda(e.target.value)}
                 placeholder="Buscar por nombre o DNI..."
-                className="w-full rounded-lg py-2.5 pl-10 pr-4 text-sm outline-none transition-all"
-                style={{ background: '#f1f3ff', border: 'none' }}
-                onFocus={e => e.currentTarget.style.boxShadow = '0 0 0 2px rgba(0,63,177,0.2)'}
-                onBlur={e => e.currentTarget.style.boxShadow = 'none'}
+                style={{
+                  width: '100%', padding: '9px 12px 9px 36px',
+                  border: '1px solid #E8ECF4', borderRadius: '10px',
+                  background: '#FFFFFF', color: '#1A1F36', fontSize: '13px',
+                  outline: 'none', boxSizing: 'border-box',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+                }}
+                onFocus={e => { e.target.style.borderColor = '#1A56DB'; e.target.style.boxShadow = '0 0 0 3px rgba(26,86,219,0.12)' }}
+                onBlur={e  => { e.target.style.borderColor = '#E8ECF4'; e.target.style.boxShadow = '0 1px 3px rgba(0,0,0,0.04)' }}
               />
             </div>
-            <div className="flex p-1 rounded-lg" style={{ background: '#f1f3ff' }}>
-              {['todos', 'registrados', 'pendientes'].map(f => (
-                <button
-                  key={f}
-                  onClick={() => setFiltro(f)}
-                  className={`px-4 py-1.5 rounded-md text-sm font-medium capitalize transition-all ${
-                    filtro === f ? 'bg-white font-semibold shadow-sm' : 'hover:bg-white/50'
-                  }`}
-                  style={{ color: filtro === f ? '#003fb1' : '#737686' }}
-                >
-                  {f}
+
+            {/* Chip group */}
+            <div style={{
+              display: 'flex', background: '#FFFFFF',
+              border: '1px solid #E8ECF4', borderRadius: '10px', padding: '4px',
+            }}>
+              {[
+                { id: 'todos',       label: 'Todos' },
+                { id: 'registrados', label: 'Registrados' },
+                { id: 'pendientes',  label: 'Pendientes' },
+              ].map(({ id, label }) => (
+                <button key={id} onClick={() => setFiltro(id)} style={{
+                  padding: '6px 16px', borderRadius: '7px', border: 'none', cursor: 'pointer',
+                  background: filtro === id ? '#1A56DB' : 'transparent',
+                  color:      filtro === id ? '#FFFFFF' : '#8A92A6',
+                  fontWeight: filtro === id ? 600 : 500,
+                  fontSize: '13px', transition: 'all 0.15s ease',
+                  minHeight: '36px',
+                }}>
+                  {label}
                 </button>
               ))}
             </div>
+
+            {/* View toggles */}
+            <div style={{
+              display: 'flex', background: '#FFFFFF',
+              border: '1px solid #E8ECF4', borderRadius: '10px', padding: '4px', gap: '2px',
+            }}>
+              <button style={{
+                width: '36px', height: '36px', borderRadius: '6px', border: 'none', cursor: 'pointer',
+                background: '#EEF2FF', color: '#1A56DB',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }} aria-label="Vista lista">
+                <Icons.List style={{ width: '16px', height: '16px' }} />
+              </button>
+              <button style={{
+                width: '36px', height: '36px', borderRadius: '6px', border: 'none', cursor: 'pointer',
+                background: 'transparent', color: '#8A92A6',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }} aria-label="Vista grilla">
+                <Icons.Grid style={{ width: '16px', height: '16px' }} />
+              </button>
+            </div>
+
+            {/* Agregar Trabajador button */}
+            <button
+              onClick={() => setMostrarAgregar(true)}
+              style={{
+                display: 'flex', alignItems: 'center', gap: '8px',
+                padding: '9px 18px', borderRadius: '10px',
+                border: '1.5px solid #1A56DB',
+                background: '#FFFFFF', color: '#1A56DB',
+                fontWeight: 600, fontSize: '13px', cursor: 'pointer',
+                transition: 'all 0.15s ease',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.background = '#1A56DB'; e.currentTarget.style.color = '#FFFFFF' }}
+              onMouseLeave={e => { e.currentTarget.style.background = '#FFFFFF'; e.currentTarget.style.color = '#1A56DB' }}
+            >
+              <Icons.UserPlus style={{ width: '16px', height: '16px' }} />
+              Agregar
+            </button>
+
+            {/* Export button */}
+            <button style={{
+              display: 'flex', alignItems: 'center', gap: '8px',
+              padding: '9px 18px', borderRadius: '10px', border: 'none',
+              background: '#1A56DB', color: '#FFFFFF',
+              fontWeight: 600, fontSize: '13px', cursor: 'pointer',
+              boxShadow: '0 2px 8px rgba(26,86,219,0.25)',
+            }}>
+              <Icons.Download style={{ width: '16px', height: '16px' }} />
+              Exportar
+            </button>
           </div>
 
-          {/* Worker List or Empty/Loading/Error State */}
+          {/* Worker list / states */}
           {cargando ? (
-            <div className="bg-white rounded-xl flex flex-col items-center justify-center py-24 shadow-[0_8px_32px_rgba(20,27,43,0.04)]">
-              <svg className="animate-spin w-10 h-10 mb-4" fill="none" viewBox="0 0 24 24" style={{ color: '#003fb1' }}>
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+            <div style={{
+              background: '#FFFFFF', border: '1px solid #E8ECF4', borderRadius: '12px',
+              display: 'flex', flexDirection: 'column', alignItems: 'center',
+              justifyContent: 'center', padding: '80px 24px',
+            }}>
+              <svg style={{ width: '36px', height: '36px', color: '#1A56DB', marginBottom: '16px', animation: 'spin 1s linear infinite' }}
+                   fill="none" viewBox="0 0 24 24">
+                <circle style={{ opacity: 0.2 }} cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path style={{ opacity: 0.8 }} fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
               </svg>
-              <p className="text-sm font-medium" style={{ color: '#737686' }}>Cargando asistencia...</p>
+              <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+              <p style={{ fontSize: '14px', color: '#8A92A6', fontWeight: 500 }}>Cargando asistencia...</p>
             </div>
+
           ) : error ? (
-            <div className="bg-white rounded-xl flex flex-col items-center justify-center py-24 shadow-[0_8px_32px_rgba(20,27,43,0.04)]">
-              <Icons.Error className="w-12 h-12 mb-4" style={{ color: '#ba1a1a' }} />
-              <p className="text-sm font-medium" style={{ color: '#ba1a1a' }}>{error}</p>
-              <button onClick={cargarDia} className="mt-4 px-6 py-2 rounded-lg text-sm font-semibold text-white" style={{ background: '#003fb1' }}>
+            <div style={{
+              background: '#FFFFFF', border: '1px solid #E8ECF4', borderRadius: '12px',
+              display: 'flex', flexDirection: 'column', alignItems: 'center',
+              justifyContent: 'center', padding: '80px 24px', textAlign: 'center',
+            }}>
+              <Icons.Error style={{ width: '48px', height: '48px', color: '#E53E3E', marginBottom: '16px' }} />
+              <p style={{ fontSize: '14px', color: '#E53E3E', fontWeight: 600, marginBottom: '16px' }}>{error}</p>
+              <button onClick={cargarDia} style={{
+                padding: '10px 24px', borderRadius: '10px', border: 'none',
+                background: '#1A56DB', color: '#FFFFFF',
+                fontWeight: 600, fontSize: '13px', cursor: 'pointer',
+              }}>
                 Reintentar
               </button>
             </div>
+
           ) : registrosFiltrados.length === 0 ? (
-            <div className="bg-white rounded-xl flex flex-col items-center justify-center py-24 px-8 text-center shadow-[0_8px_32px_rgba(20,27,43,0.04)]">
-              <div className="mb-6 p-5 rounded-full" style={{ background: '#f1f3ff' }}>
-                <Icons.UserOff className="w-16 h-16" style={{ color: '#737686' }} />
+            <div style={{
+              background: '#FFFFFF', border: '1px solid #E8ECF4', borderRadius: '12px',
+              display: 'flex', flexDirection: 'column', alignItems: 'center',
+              justifyContent: 'center', padding: '64px 32px', textAlign: 'center',
+            }}>
+              <div style={{
+                width: '96px', height: '96px', borderRadius: '50%',
+                background: '#F0F2F8', display: 'flex', alignItems: 'center',
+                justifyContent: 'center', marginBottom: '24px',
+              }}>
+                <Icons.UserOff style={{ width: '48px', height: '48px', color: '#8A92A6' }} />
               </div>
-              <h3 className="text-xl font-semibold mb-2" style={{ color: '#141b2b' }}>No hay trabajadores asignados</h3>
-              <p className="text-sm max-w-sm mb-8" style={{ color: '#737686' }}>
+              <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#1A1F36', marginBottom: '8px' }}>
+                No hay trabajadores asignados
+              </h3>
+              <p style={{ fontSize: '13px', color: '#8A92A6', maxWidth: '280px', lineHeight: 1.5, marginBottom: '24px' }}>
                 {busqueda
                   ? 'No se encontraron resultados. Probá con otro término.'
-                  : `Los trabajadores del área ${nombreArea} aparecerán aquí una vez registrados.`
-                }
+                  : `Los trabajadores de esta área aparecerán aquí una vez asignados al turno de ${nombreArea.toLowerCase()} de hoy.`}
               </p>
+              {!busqueda && (
+                <button style={{
+                  display: 'flex', alignItems: 'center', gap: '8px',
+                  padding: '12px 24px', borderRadius: '10px', border: 'none',
+                  background: '#1A56DB', color: '#FFFFFF',
+                  fontWeight: 600, fontSize: '14px', cursor: 'pointer',
+                  boxShadow: '0 4px 12px rgba(26,86,219,0.25)',
+                }}>
+                  <Icons.UserPlus style={{ width: '18px', height: '18px' }} />
+                  Agregar Trabajadores
+                </button>
+              )}
             </div>
+
           ) : (
-            <div className="bg-white rounded-xl shadow-[0_8px_32px_rgba(20,27,43,0.04)] overflow-hidden">
+            <div style={{
+              background: '#FFFFFF', border: '1px solid #E8ECF4', borderRadius: '12px',
+              overflow: 'hidden', boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+            }}>
               {/* Table header */}
-              <div className="grid grid-cols-[1fr_auto] px-6 py-3" style={{ background: '#f9f9ff', borderBottom: '1px solid #e9edff' }}>
-                <span className="text-[11px] font-bold uppercase tracking-wider" style={{ color: '#737686' }}>Trabajador</span>
-                <span className="text-[11px] font-bold uppercase tracking-wider" style={{ color: '#737686' }}>Estado</span>
+              <div style={{
+                display: 'grid', gridTemplateColumns: '1fr auto',
+                padding: '10px 20px',
+                background: '#F8FAFC', borderBottom: '1px solid #E8ECF4',
+              }}>
+                <span style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#8A92A6' }}>
+                  Trabajador
+                </span>
+                <span style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#8A92A6' }}>
+                  Estado
+                </span>
               </div>
+
               {/* Rows */}
-              <ul>
+              <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
                 {registrosFiltrados.map((r, i) => (
-                  <li key={r.id} style={{ borderBottom: i < registrosFiltrados.length - 1 ? '1px solid #f1f3ff' : 'none' }}>
+                  <li key={r.id} style={{
+                    borderBottom: i < registrosFiltrados.length - 1 ? '1px solid #F0F4F8' : 'none',
+                  }}>
                     <button
                       onClick={() => setTrabajadorSeleccionado(r)}
-                      className="w-full px-6 py-4 flex items-center justify-between hover:bg-[#f9f9ff] active:bg-[#f1f3ff] transition-colors text-left group"
+                      style={{
+                        width: '100%', display: 'flex', alignItems: 'center',
+                        justifyContent: 'space-between', padding: '14px 20px',
+                        background: 'transparent', border: 'none', cursor: 'pointer',
+                        textAlign: 'left', minHeight: '60px',
+                      }}
+                      onMouseEnter={e => { e.currentTarget.style.background = '#F8FAFC' }}
+                      onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}
                     >
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full font-bold text-sm flex items-center justify-center shrink-0 transition-colors"
-                          style={{ background: '#e9edff', color: '#003fb1' }}
-                        >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', minWidth: 0 }}>
+                        <div style={{
+                          width: '38px', height: '38px', borderRadius: '50%',
+                          background: '#EEF2FF', color: '#1A56DB',
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          fontWeight: 700, fontSize: '14px', flexShrink: 0,
+                        }}>
                           {r.apellido[0]?.toUpperCase()}
                         </div>
-                        <div>
-                          <p className="font-semibold text-sm leading-tight" style={{ color: '#141b2b' }}>
-                            {r.apellido}, {r.nombre}
-                          </p>
-                          <p className="text-xs mt-0.5" style={{ color: '#737686' }}>DNI {r.dni}</p>
+                        <div style={{ minWidth: 0 }}>
+                           <p style={{
+                             fontSize: '14px', fontWeight: 600, color: '#1A1F36',
+                             lineHeight: 1.3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                           }}>
+                             {r.apellido}, {r.nombre}
+                           </p>
+                           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '2px' }}>
+                             <p style={{ fontSize: '12px', color: '#8A92A6', margin: 0 }}>
+                               DNI {r.dni}
+                             </p>
+                             {r.modalidad && (
+                               <span style={{
+                                 fontSize: '10px',
+                                 fontWeight: 600,
+                                 padding: '1px 6px',
+                                 borderRadius: '4px',
+                                 background: r.modalidad === 'MOD_728' ? '#EEF2FF' : '#F0FDF4',
+                                 color:      r.modalidad === 'MOD_728' ? '#1A56DB' : '#15803D',
+                               }}>
+                                 {r.modalidad === 'MOD_728' ? '728' : 'CAS'}
+                               </span>
+                             )}
+                           </div>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0, marginLeft: '16px' }}>
                         <EstadoBadge estado={r.registro?.estado} />
-                        <Icons.ChevronRight className="w-4 h-4 transition-colors" style={{ color: '#c3c5d7' }} />
+                        <Icons.ChevronRight style={{ width: '16px', height: '16px', color: '#C8CEDE' }} />
                       </div>
                     </button>
                   </li>
@@ -381,15 +707,30 @@ export default function Asistencia() {
               </ul>
             </div>
           )}
-        </div>
-      </main>
+        </main>
+      </div>
 
-      {/* Modal */}
+      {/* ─── Responsive sidebar CSS ─── */}
+      <style>{`
+        @media (min-width: 768px) {
+          .md-sidebar { display: flex !important; }
+        }
+      `}</style>
+
+      {/* Modal asistencia */}
       {trabajadorSeleccionado && (
         <ModalAsistencia
           trabajador={trabajadorSeleccionado}
           onClose={() => setTrabajadorSeleccionado(null)}
           onGuardado={handleGuardado}
+        />
+      )}
+
+      {/* Modal agregar trabajador */}
+      {mostrarAgregar && (
+        <ModalAgregarTrabajador
+          onClose={() => setMostrarAgregar(false)}
+          onAgregado={handleTrabajadorAgregado}
         />
       )}
     </div>
