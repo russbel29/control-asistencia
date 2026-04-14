@@ -19,8 +19,12 @@ async function marcar(req, res) {
 
 async function obtenerDia(req, res) {
   try {
-    const registros = await asistenciaService.obtenerDia(req.fiscal.areaId)
-    res.json({ fecha: new Date().toISOString().split('T')[0], registros })
+    const fechaStr = req.query.fecha || null  // YYYY-MM-DD opcional
+    const registros = await asistenciaService.obtenerDia(req.fiscal.areaId, fechaStr)
+
+    // Devuelve la fecha consultada (o hoy si no se pasó)
+    const fechaRespuesta = fechaStr || new Date().toISOString().split('T')[0]
+    res.json({ fecha: fechaRespuesta, registros })
   } catch (err) {
     const status = err.status || 500
     res.status(status).json({ error: err.message || 'Error interno del servidor' })

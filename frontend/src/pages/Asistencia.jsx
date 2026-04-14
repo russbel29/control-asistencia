@@ -183,11 +183,33 @@ export default function Asistencia() {
   const [filtro, setFiltro]         = useState('todos')
   const [mostrarAgregar, setMostrarAgregar] = useState(false)
 
-  const cargarDia = useCallback(async () => {
+  // fechaConsultada: null = hoy, 'YYYY-MM-DD' = día específico
+  const [fechaConsultada, setFechaConsultada] = useState(null)
+
+  // Fecha de hoy en formato YYYY-MM-DD (para comparar y bloquear "→" en hoy)
+  const hoyStr = new Date().toISOString().split('T')[0]
+  const esHoy  = !fechaConsultada || fechaConsultada === hoyStr
+
+  function irDiaAnterior() {
+    const base = fechaConsultada ? new Date(fechaConsultada + 'T12:00:00') : new Date()
+    base.setDate(base.getDate() - 1)
+    setFechaConsultada(base.toISOString().split('T')[0])
+  }
+
+  function irDiaSiguiente() {
+    if (esHoy) return  // no navegar al futuro
+    const base = new Date(fechaConsultada + 'T12:00:00')
+    base.setDate(base.getDate() + 1)
+    const nueva = base.toISOString().split('T')[0]
+    setFechaConsultada(nueva >= hoyStr ? null : nueva)
+  }
+
+  const cargarDia = useCallback(async (fechaParam) => {
     setCargando(true)
     setError('')
     try {
-      const { data } = await api.get('/asistencia/dia')
+      const url = fechaParam ? `/asistencia/dia?fecha=${fechaParam}` : '/asistencia/dia'
+      const { data } = await api.get(url)
       setRegistros(data.registros)
       setFecha(data.fecha)
     } catch {
@@ -197,7 +219,8 @@ export default function Asistencia() {
     }
   }, [])
 
-  useEffect(() => { cargarDia() }, [cargarDia])
+  // Recargar cuando cambia la fecha consultada
+  useEffect(() => { cargarDia(fechaConsultada) }, [cargarDia, fechaConsultada])
 
   function handleGuardado(nuevoRegistro) {
     setRegistros(prev =>
@@ -211,7 +234,7 @@ export default function Asistencia() {
 
   function handleTrabajadorAgregado() {
     setMostrarAgregar(false)
-    cargarDia()
+    cargarDia(fechaConsultada)
   }
 
   const registrosFiltrados = registros
@@ -388,15 +411,40 @@ export default function Asistencia() {
                 {fechaCap}
               </span>
               <div style={{ display: 'flex', gap: '2px', marginLeft: '4px' }}>
-                <button style={{ width: '24px', height: '24px', borderRadius: '6px', border: 'none', background: 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }} aria-label="Día anterior">
+                <button
+                  onClick={irDiaAnterior}
+                  style={{ width: '24px', height: '24px', borderRadius: '6px', border: 'none', background: 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                  aria-label="Día anterior"
+                >
                   <Icons.ChevronLeft style={{ width: '14px', height: '14px', color: '#8A92A6' }} />
                 </button>
-                <button style={{ width: '24px', height: '24px', borderRadius: '6px', border: 'none', background: 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }} aria-label="Día siguiente">
+                <button
+                  onClick={irDiaSiguiente}
+                  disabled={esHoy}
+                  style={{ width: '24px', height: '24px', borderRadius: '6px', border: 'none', background: 'transparent', cursor: esHoy ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: esHoy ? 0.3 : 1 }}
+                  aria-label="Día siguiente"
+                >
                   <Icons.ChevronRight style={{ width: '14px', height: '14px', color: '#8A92A6' }} />
                 </button>
               </div>
             </div>
           </div>
+
+          {/* Banner solo lectura — días pasados */}
+          {!esHoy && (
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: '10px',
+              padding: '10px 16px', borderRadius: '10px',
+              background: '#FFF9E6', border: '1px solid #FCD34D',
+            }}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="#D97706" strokeWidth={1.5} style={{ width: '18px', height: '18px', flexShrink: 0 }}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+              </svg>
+              <p style={{ fontSize: '13px', color: '#92400E', fontWeight: 500, margin: 0 }}>
+                Estás viendo un registro histórico — <strong>solo lectura</strong>. Para registrar asistencia usá el día actual.
+              </p>
+            </div>
+          )}
 
           {/* ── KPI Grid ── */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
@@ -527,23 +575,25 @@ export default function Asistencia() {
               </button>
             </div>
 
-            {/* Agregar Trabajador button */}
-            <button
-              onClick={() => setMostrarAgregar(true)}
-              style={{
-                display: 'flex', alignItems: 'center', gap: '8px',
-                padding: '9px 18px', borderRadius: '10px',
-                border: '1.5px solid #1A56DB',
-                background: '#FFFFFF', color: '#1A56DB',
-                fontWeight: 600, fontSize: '13px', cursor: 'pointer',
-                transition: 'all 0.15s ease',
-              }}
-              onMouseEnter={e => { e.currentTarget.style.background = '#1A56DB'; e.currentTarget.style.color = '#FFFFFF' }}
-              onMouseLeave={e => { e.currentTarget.style.background = '#FFFFFF'; e.currentTarget.style.color = '#1A56DB' }}
-            >
-              <Icons.UserPlus style={{ width: '16px', height: '16px' }} />
-              Agregar
-            </button>
+            {/* Agregar Trabajador — solo visible en el día actual */}
+            {esHoy && (
+              <button
+                onClick={() => setMostrarAgregar(true)}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: '8px',
+                  padding: '9px 18px', borderRadius: '10px',
+                  border: '1.5px solid #1A56DB',
+                  background: '#FFFFFF', color: '#1A56DB',
+                  fontWeight: 600, fontSize: '13px', cursor: 'pointer',
+                  transition: 'all 0.15s ease',
+                }}
+                onMouseEnter={e => { e.currentTarget.style.background = '#1A56DB'; e.currentTarget.style.color = '#FFFFFF' }}
+                onMouseLeave={e => { e.currentTarget.style.background = '#FFFFFF'; e.currentTarget.style.color = '#1A56DB' }}
+              >
+                <Icons.UserPlus style={{ width: '16px', height: '16px' }} />
+                Agregar
+              </button>
+            )}
 
             {/* Export button */}
             <button style={{
@@ -582,7 +632,7 @@ export default function Asistencia() {
             }}>
               <Icons.Error style={{ width: '48px', height: '48px', color: '#E53E3E', marginBottom: '16px' }} />
               <p style={{ fontSize: '14px', color: '#E53E3E', fontWeight: 600, marginBottom: '16px' }}>{error}</p>
-              <button onClick={cargarDia} style={{
+              <button onClick={() => cargarDia(fechaConsultada)} style={{
                 padding: '10px 24px', borderRadius: '10px', border: 'none',
                 background: '#1A56DB', color: '#FFFFFF',
                 fontWeight: 600, fontSize: '13px', cursor: 'pointer',
@@ -652,14 +702,15 @@ export default function Asistencia() {
                     borderBottom: i < registrosFiltrados.length - 1 ? '1px solid #F0F4F8' : 'none',
                   }}>
                     <button
-                      onClick={() => setTrabajadorSeleccionado(r)}
+                      onClick={() => esHoy && setTrabajadorSeleccionado(r)}
                       style={{
                         width: '100%', display: 'flex', alignItems: 'center',
                         justifyContent: 'space-between', padding: '14px 20px',
-                        background: 'transparent', border: 'none', cursor: 'pointer',
+                        background: 'transparent', border: 'none',
+                        cursor: esHoy ? 'pointer' : 'default',
                         textAlign: 'left', minHeight: '60px',
                       }}
-                      onMouseEnter={e => { e.currentTarget.style.background = '#F8FAFC' }}
+                      onMouseEnter={e => { if (esHoy) e.currentTarget.style.background = '#F8FAFC' }}
                       onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}
                     >
                       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', minWidth: 0 }}>

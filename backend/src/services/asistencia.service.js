@@ -52,11 +52,34 @@ async function marcar(trabajadorId, estado, observacion = null) {
 }
 
 /**
- * Obtiene el registro de asistencia del día actual para todos los trabajadores del área.
+ * Obtiene el registro de asistencia de una fecha para todos los trabajadores del área.
+ * Si no se pasa fecha, usa el día actual del servidor.
+ * @param {number} areaId
+ * @param {string|null} fechaStr - formato YYYY-MM-DD (opcional)
  */
-async function obtenerDia(areaId) {
-  const hoy = new Date()
-  hoy.setUTCHours(0, 0, 0, 0)
+async function obtenerDia(areaId, fechaStr = null) {
+  let fecha
+
+  if (fechaStr) {
+    // Validar formato YYYY-MM-DD
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(fechaStr)) {
+      throw { status: 400, message: 'Formato de fecha inválido. Usá YYYY-MM-DD' }
+    }
+    fecha = new Date(fechaStr + 'T00:00:00.000Z')
+    if (isNaN(fecha.getTime())) {
+      throw { status: 400, message: 'Fecha inválida' }
+    }
+
+    // No permitir fechas futuras
+    const hoy = new Date()
+    hoy.setUTCHours(0, 0, 0, 0)
+    if (fecha > hoy) {
+      throw { status: 400, message: 'No se pueden consultar fechas futuras' }
+    }
+  } else {
+    fecha = new Date()
+    fecha.setUTCHours(0, 0, 0, 0)
+  }
 
   const trabajadores = await prisma.trabajador.findMany({
     where: { areaId, activo: true },
@@ -68,7 +91,7 @@ async function obtenerDia(areaId) {
       dni: true,
       modalidad: true,
       registros: {
-        where: { fecha: hoy },
+        where: { fecha },
         select: { id: true, estado: true, observacion: true, actualizadoEn: true }
       }
     }
